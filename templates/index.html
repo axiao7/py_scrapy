@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html style="height: 100%">
+   <head>
+       <meta charset="utf-8">
+       <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+       <script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
+       <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+       <style>
+           #container {
+                width: 600px;
+                margin: 0 auto;
+           }
+           .info {
+                width: 600px;
+                height: 50px;
+                background: #ECBA10;
+                color: #fff;
+                line-height: 50px;
+                margin-top: 10px;
+                cursor: pointer;
+                /*text-align: center;*/
+           }
+           .movie, .mark {
+                font-weight: bold;
+           }
+           .movie {
+                margin-left: 30px;
+           }
+           .mark {
+                margin-left: 20px;
+                display:inline-block;
+                color: #000;
+           }
+       </style>
+   </head>
+   <body style="height: 100%; margin: 0">
+       <div id="container" style="height: 100%">
+       </div>
+       <script>
+            var colors = ['#DF352F', '#DE6A1B', '#ECBA10', '#4CD17A', '#2C84D2', '#21B189', '#8740A6'];
+            var color_flag=0;
+            function showInfo (data) {
+                console.log(data);
+            }
+           $.ajax({
+             type: "GET",
+             url: "./api",
+             success: function(data){
+                        var max_width = Number(data[0][1]);
+                        html = '';
+                        // Number(info[1]/max_width*600)
+                        data.forEach(function (info){
+                            html += '<div class="info" data-container="body" data-toggle="popover" data-placement="right" data-trigger="hover" data-content="'+ info[2] +'" style="width:'+ 600 +'px;background:'+ colors[color_flag] +'"><span class="movie">'+info[1]+'</span><span class="mark">'+info[0]+'</span></div>';
+                            color_flag++;
+                            color_flag %= 7;
+                        });
+                        $('#container').html(html);
+                        $('[data-toggle="popover"]').popover();
+                      }
+         });
+       </script>
+   </body>
+</html>
